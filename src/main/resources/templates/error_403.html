@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
 <head>
-    <title>Spring Security Example</title>
-    <style>table th, table td {
-        padding: 15px;
-    }</style>
+    <meta charset="UTF-8">
+    <title>Error</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
     <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous">
@@ -13,27 +12,11 @@
 
 <body style="background-color: linen">
 <div th:align="center">
-    <h1>Welcome!</h1>
+    <h1>Oops!</h1>
     <br/>
-    <h4>It's your personal data.</h4>
-</div>
-
-<div th:align="center">
-    <table th:border="0">
-        <tr>
-            <th>Name</th>
-            <th>Last name</th>
-            <th>Age</th>
-        </tr>
-
-        <tr th:each="us : ${user}" style="background-color: ivory">
-            <td th:utext="${us.getName()}"></td>
-            <td th:utext="${us.getLastName()}"></td>
-            <td th:utext="${us.getAge()}"></td>
-        </tr>
-    </table>
+    <h4>Sorry, your permissions are not sufficient to view this page</h4>
     <br/>
-    <p><a href="/logout">Logout</a></p>
+    <p><a href="/user">Go back</a></p>
 </div>
 </body>
 </html>

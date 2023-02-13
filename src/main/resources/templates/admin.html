@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
 <head>
     <title>Spring Security Example</title>
     <style>table th, table td {
@@ -13,9 +14,11 @@
 
 <body style="background-color: linen">
 <div th:align="center">
-    <h1>Welcome!</h1>
+    <h1>Users</h1>
     <br/>
-    <h4>It's your personal data.</h4>
+    <h4>You have a list of users.</h4>
+    <h4>If you want to add, update or delete a user select the appropriate button below.</h4>
+    <br/>
 </div>
 
 <div th:align="center">
@@ -24,15 +27,19 @@
             <th>Name</th>
             <th>Last name</th>
             <th>Age</th>
+            <th>Actions</th>
         </tr>
 
-        <tr th:each="us : ${user}" style="background-color: ivory">
+        <tr th:each="us : ${users}" style="background-color: ivory">
             <td th:utext="${us.getName()}"></td>
             <td th:utext="${us.getLastName()}"></td>
             <td th:utext="${us.getAge()}"></td>
+            <td><a th:href="@{user-update/{id}(id=${us.id})}">Edit</a></td>
+            <td><a th:href="@{user-delete/{id}(id=${us.id})}">Delete</a></td>
         </tr>
     </table>
     <br/>
+    <p><a href="/user-create">Create user</a></p>
     <p><a href="/logout">Logout</a></p>
 </div>
 </body>

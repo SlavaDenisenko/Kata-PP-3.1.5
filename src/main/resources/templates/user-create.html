@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Create user</title>
+    <style>table th, table td {
+        padding: 15px;
+    }</style>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous">
+</head>
+
+<body style="background-color: linen">
+<div th:align="center">
+    <form action="#" th:action="@{/user-create}" th:object="${users}" method="post">
+        <table>
+            <tbody>
+            <tr>
+                <td>Name</td>
+                <td>
+                    <input type="text" th:field="*{name}" id="name" placeholder="enter name">
+                </td>
+            </tr>
+            <tr>
+                <td>LastName</td>
+                <td>
+                    <input type="text" th:field="*{lastName}" id="lastName" placeholder="enter last name">
+                </td>
+            </tr>
+            <tr>
+                <td>Age</td>
+                <td>
+                    <input type="number" th:field="*{age}" id="age" placeholder="enter age">
+                </td>
+            </tr>
+            <tr>
+                <td>Username</td>
+                <td>
+                    <input type="text" th:field="*{username}" id="username" placeholder="enter username">
+                </td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td>
+                    <input type="text" th:field="*{password}" id="password" placeholder="enter password">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <br/>
+        <input type="submit" value="Create User">
+    </form>
+    <br/>
+    <p><a href="/logout">Logout</a></p>
+</div>
+</body>
+</html>
