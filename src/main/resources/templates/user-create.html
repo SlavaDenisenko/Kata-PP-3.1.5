@@ -1,60 +1,72 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Create user</title>
-    <style>table th, table td {
-        padding: 15px;
-    }</style>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-    <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous">
+    <title>Create User</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
 </head>
 
-<body style="background-color: linen">
-<div th:align="center">
-    <form action="#" th:action="@{/user-create}" th:object="${users}" method="post">
-        <table>
-            <tbody>
-            <tr>
-                <td>Name</td>
-                <td>
-                    <input type="text" th:field="*{name}" id="name" placeholder="enter name">
-                </td>
-            </tr>
-            <tr>
-                <td>LastName</td>
-                <td>
-                    <input type="text" th:field="*{lastName}" id="lastName" placeholder="enter last name">
-                </td>
-            </tr>
-            <tr>
-                <td>Age</td>
-                <td>
-                    <input type="number" th:field="*{age}" id="age" placeholder="enter age">
-                </td>
-            </tr>
-            <tr>
-                <td>Username</td>
-                <td>
-                    <input type="text" th:field="*{username}" id="username" placeholder="enter username">
-                </td>
-            </tr>
-            <tr>
-                <td>Password</td>
-                <td>
-                    <input type="text" th:field="*{password}" id="password" placeholder="enter password">
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <br/>
-        <input type="submit" value="Create User">
-    </form>
-    <br/>
-    <p><a href="/logout">Logout</a></p>
+<body>
+<header class="navbar navbar-dark bg-dark">
+    <div>
+        <span><b class="white" th:utext="${user.getUsername()}"></b></span>
+        <span class="white"> with roles: </span>
+        <span class="white" th:utext="${user.getRoles()}"></span>
+    </div>
+    <span><a class="navbar-text" href="/logout" style="text-decoration: none">Logout</a></span>
+</header>
+<div class="den_item">
+    <div class="den_item_left">
+        <a href="/admin" class="btn-user-admin-active">Admin</a>
+        <a href="/user" class="btn-user-admin-non-active">User</a>
+    </div>
+
+    <div class="den_item_right">
+        <h1>Admin panel</h1>
+        <div class="div-btn">
+            <button class="btn-new-non-active"><a href="/admin" class="a-btn-new-non-active">Users table</a></button>
+            <button class="btn-new" style="border-bottom: 0"><a href="/user-create" class="a-btn-new">New User</a>
+            </button>
+        </div>
+        <div class="div-table" style="margin-top: 0; border-top-left-radius: 0">
+            <div class="div-about">
+                <h5>Add new user</h5>
+            </div>
+            <div style="padding: 20px 20px 20px 20px" align="center">
+                <form style="width: 300px" action="#" th:action="@{/user-create}" th:object="${users}" method="post">
+                    <div>
+                        <p class="p-label"><b>First name</b></p>
+                        <input class="input-form-create-user" type="text" th:field="*{name}" id="name"
+                               placeholder="First name">
+                        <p class="p-label"><b>Last name</b></p>
+                        <input class="input-form-create-user" type="text" th:field="*{lastName}" id="lastName"
+                               placeholder="Last name">
+                        <p class="p-label"><b>Age</b></p>
+                        <input class="input-form-create-user" type="number" th:field="*{age}" id="age"
+                               placeholder="Age">
+                        <p class="p-label"><b>Username</b></p>
+                        <input class="input-form-create-user" type="text" th:field="*{username}" id="username"
+                               placeholder="Username">
+                        <p class="p-label"><b>Password</b></p>
+                        <input class="input-form-create-user" type="password" th:field="*{password}" id="password"
+                               placeholder="Password">
+                        <p class="p-label"><b>Role</b></p>
+                        <select size="2" style="width: 100%" name="role">
+                            <option th:each="role : ${roles}"
+                                    th:utext="${role.getName()}">
+                            </option>
+                        </select>
+                        <button class="btn-green">Add new user</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

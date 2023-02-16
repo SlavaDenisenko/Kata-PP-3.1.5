@@ -1,46 +1,78 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="en">
 
 <head>
-    <title>Spring Security Example</title>
-    <style>table th, table td {
-        padding: 15px;
-    }</style>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-    <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous">
+    <title>Admin page</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
 </head>
 
-<body style="background-color: linen">
-<div th:align="center">
-    <h1>Users</h1>
-    <br/>
-    <h4>You have a list of users.</h4>
-    <h4>If you want to add, update or delete a user select the appropriate button below.</h4>
-    <br/>
-</div>
+<body>
+<header class="navbar navbar-dark bg-dark">
+    <div>
+        <span><b class="white" th:utext="${user.getUsername()}"></b></span>
+        <span class="white"> with roles: </span>
+        <span class="white" th:utext="${user.getRoles()}"></span>
+    </div>
+    <span><a class="navbar-text" href="/logout" style="text-decoration: none">Logout</a></span>
+</header>
+<div class="den_item">
+    <div class="den_item_left">
+        <a href="/admin" class="btn-user-admin-active">Admin</a>
+        <a href="/user" class="btn-user-admin-non-active">User</a>
+    </div>
 
-<div th:align="center">
-    <table th:border="0">
-        <tr>
-            <th>Name</th>
-            <th>Last name</th>
-            <th>Age</th>
-            <th>Actions</th>
-        </tr>
+    <div class="den_item_right">
+        <h1>Admin panel</h1>
+        <div class="div-btn">
+            <button class="btn-new" style="border-bottom: 0"><a href="/admin" class="a-btn-new">Users table</a></button>
+            <button class="btn-new-non-active"><a href="/user-create" class="a-btn-new-non-active">New User</a></button>
+        </div>
+        <div class="div-table" style="margin-top: 0; border-top-left-radius: 0">
+            <div class="div-about">
+                <h5>All users</h5>
+            </div>
+            <div style="padding: 20px 20px 40px 20px">
+                <table>
+                    <tbody>
+                    <tr>
+                        <th>ID</th>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>Age</th>
+                        <th>Username</th>
+                        <th>Role</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
 
-        <tr th:each="us : ${users}" style="background-color: ivory">
-            <td th:utext="${us.getName()}"></td>
-            <td th:utext="${us.getLastName()}"></td>
-            <td th:utext="${us.getAge()}"></td>
-            <td><a th:href="@{user-update/{id}(id=${us.id})}">Edit</a></td>
-            <td><a th:href="@{user-delete/{id}(id=${us.id})}">Delete</a></td>
-        </tr>
-    </table>
-    <br/>
-    <p><a href="/user-create">Create user</a></p>
-    <p><a href="/logout">Logout</a></p>
+                    <tr th:each="us : ${users}">
+                        <td th:utext="${us.getId()}">ID</td>
+                        <td th:utext="${us.getName()}">First name</td>
+                        <td th:utext="${us.getLastName()}">Last name</td>
+                        <td th:utext="${us.getAge()}">Age</td>
+                        <td th:utext="${us.getUsername()}">Username</td>
+                        <td th:utext="${us.getRoles()}">Role</td>
+                        <td>
+                            <button class="btn-update" style="background-color: #4ba0b5"><a class="a-btn-edit-delete"
+                                                                                            th:href="@{user-update/{id}(id=${us.id})}">Edit</a>
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn-update" style="background-color: #cb444a"><a class="a-btn-edit-delete"
+                                                                                            th:href="@{user-delete/{id}(id=${us.id})}">Delete</a>
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="en">
 
 <head>
-    <title>Update User</title>
+    <title>Delete User</title>
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -78,30 +78,30 @@
 <div class="den-pop-up">
     <div class="den-pop-up-content" align="center">
         <div class="div-top-bottom-update" style="border-bottom: 1px solid #c0c0c0" align="right">
-            <span style="float: left">Edit user</span>
+            <span style="float: left">Delete user</span>
             <p><a href="/admin"><img src="/images/cross_closure.png" width="20" height="20" alt="Cancel"></a></p>
         </div>
-        <form action="#" th:action="@{/user-update}" th:object="${users}" method="post">
+        <form action="#" th:action="@{/user-delete}" th:object="${users}" method="post">
             <div class="div-form-update">
                 <p class="p-label"><b>ID</b></p>
                 <input class="input-form-create-user" readonly type="number" th:field="*{id}" id="id">
                 <p class="p-label"><b>First name</b></p>
-                <input class="input-form-create-user" type="text" th:field="*{name}" id="name"
+                <input class="input-form-create-user" readonly type="text" th:field="*{name}" id="name"
                        placeholder="First name">
                 <p class="p-label"><b>Last name</b></p>
-                <input class="input-form-create-user" type="text" th:field="*{lastName}" id="lastName"
+                <input class="input-form-create-user" readonly type="text" th:field="*{lastName}" id="lastName"
                        placeholder="Last name">
                 <p class="p-label"><b>Age</b></p>
-                <input class="input-form-create-user" type="number" th:field="*{age}" id="age"
+                <input class="input-form-create-user" readonly type="number" th:field="*{age}" id="age"
                        placeholder="Age">
                 <p class="p-label"><b>Username</b></p>
-                <input class="input-form-create-user" type="text" th:field="*{username}" id="username"
+                <input class="input-form-create-user" readonly type="text" th:field="*{username}" id="username"
                        placeholder="Username">
                 <p class="p-label"><b>Password</b></p>
-                <input class="input-form-create-user" type="password" th:field="*{password}" id="password"
+                <input class="input-form-create-user" readonly type="password" th:field="*{password}" id="password"
                        placeholder="Password">
                 <p class="p-label"><b>Role</b></p>
-                <select size="2" style="width: 100%" name="role">
+                <select size="2" style="width: 100%" name="role" disabled="disabled">
                     <option th:each="role : ${roles}"
                             th:utext="${role.getName()}">
                     </option>
@@ -110,7 +110,7 @@
             <div class="div-top-bottom-update" style="border-top: 1px solid #c0c0c0; padding-top: 12px" align="right">
                 <input class="btn-update" type="button" value="Cancel" onclick="document.location.href='/admin'"
                        style="background-color: dimgrey">
-                <input class="btn-update" type="submit" value="Edit">
+                <input class="btn-update" style="background-color: #cb444a" type="submit" value="Delete">
             </div>
         </form>
     </div>

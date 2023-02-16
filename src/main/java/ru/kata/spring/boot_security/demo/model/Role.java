@@ -56,4 +56,11 @@ public class Role implements GrantedAuthority {
     public void setUsers(Set<User> users) {
         this.users = users;
     }
+
+    @Override
+    public String toString() {
+        if (name.contains("ROLE_USER")) return "USER";
+        else if (name.contains("ROLE_ADMIN")) return "ADMIN";
+        return null;
+    }
 }
