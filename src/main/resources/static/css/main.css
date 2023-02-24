@@ -66,6 +66,7 @@ html, body {
     background-color: #f7f7f7;
     padding-left: 20px;
     padding-top: 13px;
+    padding-right: 20px;
     border-bottom: 1px solid #c0c0c0;
 }
 
@@ -110,6 +111,7 @@ tbody tr:nth-child(even) {
     border-top-left-radius: 3px;
     border: 1px solid #c0c0c0;
     background-color: white;
+    border-bottom: 0;
     height: 100%;
 }
 
@@ -128,26 +130,6 @@ tbody tr:nth-child(even) {
     border-bottom: 0;
     border-top-right-radius: 3px;
     border-top-left-radius: 3px;
-}
-
-.a-btn-new {
-    color: black;
-    font-size: 14px;
-}
-
-.a-btn-new-non-active {
-    color: #3579f6;
-    font-size: 14px;
-}
-
-.a-btn-new:hover {
-    text-decoration: none;
-    color: black;
-}
-
-.a-btn-new-non-active:hover {
-    text-decoration: none;
-    color: #3579f6;
 }
 
 .p-label {
@@ -172,12 +154,23 @@ tbody tr:nth-child(even) {
     border: 0;
 }
 
+.btn-green-get {
+    width: 100px;
+    height: 30px;
+    background-color: green;
+    border-radius: 3px;
+    color: white;
+    font-size: 18px;
+    border: 0;
+}
+
 .den-pop-up {
     width: 100%;
     height: 100%;
     background-color: rgba(192,192,192,0.70);
     overflow: hidden;
     position: fixed;
+    display: none;
     top: 0;
 }
 
@@ -202,6 +195,22 @@ tbody tr:nth-child(even) {
     border: 0;
 }
 
+.btn-edit {
+    padding: 5px 10px 5px 10px;
+    border-radius: 3px;
+    background-color: #4ba0b5;
+    color: white;
+    border: 0;
+}
+
+.btn-cancel {
+    padding: 5px 10px 5px 10px;
+    border-radius: 3px;
+    background-color: #cb444a;
+    color: white;
+    border: 0;
+}
+
 .div-form-update {
     width: 300px;
     margin-top: 20px;
@@ -215,4 +224,12 @@ tbody tr:nth-child(even) {
 .a-btn-edit-delete:hover {
     text-decoration: none;
     color: white;
+}
+
+.el-hidden {
+    display: none;
+}
+
+.content {
+    padding: 20px 20px 40px 20px;
 }

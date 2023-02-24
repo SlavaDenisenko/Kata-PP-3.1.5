@@ -1,5 +1,9 @@
 package ru.kata.spring.boot_security.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -30,6 +34,8 @@ public class User implements UserDetails {
     @Column(name = "age")
     private Byte age;
 
+    @JsonManagedReference
+    @Fetch(FetchMode.JOIN)
     @ManyToMany
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
