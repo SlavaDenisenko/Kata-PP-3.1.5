@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      lang="en">
 
 <head>
     <title>Admin page</title>
@@ -10,14 +11,15 @@
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="/js/app.js"></script>
 </head>
 
 <body>
 <header class="navbar navbar-dark bg-dark">
     <div>
-        <span><b class="white" th:utext="${user.getUsername()}"></b></span>
+        <span><b class="white" id="current-username"></b></span>
         <span class="white"> with roles: </span>
-        <span class="white" th:utext="${user.getRoles()}" id="user-role"></span>
+        <span class="white" id="user-role"></span>
     </div>
     <span><a class="navbar-text" style="text-decoration: none" href="/logout">Logout</a></span>
 </header>
@@ -41,7 +43,7 @@
                     <h5 class="el-hidden" id="h5-add">Add new user</h5>
                 </div>
 
-                <div style="float: right; margin-top: -4px">
+                <div style="float: right; margin-top: -4px" id="div-search">
                     <form>
                         <label>Search user by id</label>
                         <input type="number" placeholder="ID" id="id">
@@ -110,149 +112,48 @@
                 <p class="p-label"><b>Password</b></p>
                 <input class="input-form-create-user" type="password" id="password_update" placeholder="Password">
                 <p class="p-label"><b>Role</b></p>
-                <select size="2" style="width: 100%" name="role">
-                    <option th:each="role : ${roles}"
-                            th:utext="${role.getName()}">
-                    </option>
-                </select>
+                <select size="2" style="width: 100%" name="role_edit" id="role_edit"></select>
             </div>
             <div class="div-top-bottom-update" style="border-top: 1px solid #c0c0c0; padding-top: 12px" align="right">
                 <input class="btn-update" type="button" value="Cancel" onclick="editClose()"
                        style="background-color: dimgrey">
-                <input class="btn-update" type="submit" value="Edit">
+                <input class="btn-update" type="button" value="Edit" onclick="editUser()">
             </div>
         </form>
     </div>
 </div>
-<script>
-    let roleList = [];
-    print();
-
-    let rowEdit = `<td><button class="btn-edit" onclick="editOpen()">Edit</button></td>`;
-    let rowCancel = `<td><button class="btn-cancel">Cancel</button></td>`;
-
-    $(document).ready(function () {
-        $.getJSON("/admin/all", function (data) {
-            $(data).each(function (key, value) {
-                $('#userTable').append($("<tr>")
-                    .append($("<td>").append(value.id))
-                    .append($("<td>").append(value.name))
-                    .append($("<td>").append(value.lastName))
-                    .append($("<td>").append(value.age))
-                    .append($("<td>").append(value.username))
-                    .append($("<td>").append(value.roles.map(role => role.name)))
-                    .append(rowEdit)
-                    .append(rowCancel));
-            })
-        })
-        fetch('/admin/authorities').then(roles => {
-            roles.json().then(data => {
-                roleList = data;
-            })
-        })
-    })
-
-    $(document).ready(function () {
-        $('#btn').click(function () {
-            for (let i = document.getElementById('userTable').getElementsByTagName('tr').length - 1; i; i--) {
-                document.getElementById('userTable').deleteRow(i);
-            }
-            let getNum = document.getElementById('id').value;
-            let url = 'admin/' + getNum;
-            console.log(url);
-            $.getJSON(url, function (data) {
-                $(data).each(function (key, value) {
-                    $('#userTable').append($("<tr>")
-                        .append($("<td>").append(value.id))
-                        .append($("<td>").append(value.name))
-                        .append($("<td>").append(value.lastName))
-                        .append($("<td>").append(value.age))
-                        .append($("<td>").append(value.username))
-                        .append($("<td>").append(value.roles.map(role => role.name)))
-                        .append(rowEdit)
-                        .append(rowCancel));
-                })
-            })
-        })
-    })
-
-    function changeToCreate() {
-        document.getElementById('div-create').style.display = "block";
-        document.getElementById('div-table').style.display = "none";
-        document.getElementById('h5-add').style.display = "block";
-        document.getElementById('h5-all').style.display = "none";
-        document.getElementById('btn-new-user').className = 'btn-new';
-        document.getElementById('btn-users-table').className = 'btn-new-non-active';
-    }
-
-    function changeToTable() {
-        document.getElementById('div-create').style.display = "none";
-        document.getElementById('div-table').style.display = "block";
-        document.getElementById('h5-add').style.display = "none";
-        document.getElementById('h5-all').style.display = "block";
-        document.getElementById('btn-new-user').className = 'btn-new-non-active';
-        document.getElementById('btn-users-table').className = 'btn-new';
-    }
-
-    function editOpen() {
-        document.getElementById('pop-up').style.display = "block";
-    }
-
-    function editClose() {
-        document.getElementById('pop-up').style.display = "none";
-    }
-
-    function print() {
-        let text = $('#user-role').text().toString();
-        if (text.indexOf('ADMIN')) {
-            $('#user-role').text('ADMIN');
-        } else {
-            $('#user-role').text('USER');
-        }
-    }
-
-    $('#btn-new-user').on('click', () => {
-        $('#name').empty().val('');
-        $('#lastName').empty().val('');
-        $('#age').empty().val('');
-        $('#username').empty().val('');
-        $('#password').empty().val('');
-        $('#selectRole').empty().val('');
-        for (let allRoles of roleList) {
-            $('#selectRole').append('<option id="' + allRoles.id + '" name="' + allRoles.name + '">' + allRoles.name + '</option>')
-        }
-    })
-
-    async function addNewUser() {
-        let user = {
-            name: document.getElementById('name').value,
-            lastName: document.getElementById('lastName').value,
-            age: document.getElementById('age').value,
-            username: document.getElementById('username').value,
-            password: document.getElementById('password').value,
-            roles: getRoles()
-        };
-
-        await fetch('http://localhost:8080/admin/add-new-user', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8'
-            },
-            body: JSON.stringify(user)
-        })
-    }
-
-    function getRoles() {
-        let allRoles = [];
-        $.each($("select[name='selectRole'] option:selected"), function () {
-            let role = {};
-            role.id = $(this).attr('id');
-            role.name = $(this).attr('name');
-            role.authority = $(this).attr('name');
-            allRoles.push(role);
-        });
-        return allRoles;
-    }
-</script>
+<div class="den-pop-up" id="pop-up-delete">
+    <div class="den-pop-up-content" align="center">
+        <div class="div-top-bottom-update" style="border-bottom: 1px solid #c0c0c0" align="right">
+            <span style="float: left" id="delete">Delete user</span>
+            <p><a onclick="deleteClose()"><img src="/images/cross_closure.png" width="20" height="20" alt="Cancel"></a>
+            </p>
+        </div>
+        <form>
+            <div class="div-form-update">
+                <p class="p-label"><b>ID</b></p>
+                <input class="input-form-create-user" readonly type="text" id="id_delete">
+                <p class="p-label"><b>First name</b></p>
+                <input class="input-form-create-user" readonly type="text" id="name_delete">
+                <p class="p-label"><b>Last name</b></p>
+                <input class="input-form-create-user" readonly type="text" id="lastName_delete">
+                <p class="p-label"><b>Age</b></p>
+                <input class="input-form-create-user" readonly type="text" id="age_delete">
+                <p class="p-label"><b>Username</b></p>
+                <input class="input-form-create-user" readonly type="text" id="username_delete">
+                <p class="p-label"><b>Password</b></p>
+                <input class="input-form-create-user" readonly type="password" id="password_delete">
+                <p class="p-label"><b>Role</b></p>
+                <input class="input-form-create-user" readonly type="text" id="role_delete">
+            </div>
+            <div class="div-top-bottom-update" style="border-top: 1px solid #c0c0c0; padding-top: 12px" align="right">
+                <input class="btn-update" type="button" value="Cancel" onclick="deleteClose()"
+                       style="background-color: dimgrey">
+                <input class="btn-update" style="background-color: #cb444a" type="button" value="Delete"
+                       id="delete-button" onclick="deleteUser()">
+            </div>
+        </form>
+    </div>
+</div>
 </body>
 </html>

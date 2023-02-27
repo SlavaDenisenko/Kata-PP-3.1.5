@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       lang="en">
 
@@ -12,14 +12,15 @@
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="/js/app-user.js"></script>
 </head>
 
 <body>
 <header class="navbar navbar-dark bg-dark">
     <div>
-        <span><b class="white" th:utext="${user.getUsername()}"></b></span>
+        <span><b class="white" id="current-user"></b></span>
         <span class="white"> with roles: </span>
-        <span class="white" th:utext="${user.getRoles()}"></span>
+        <span class="white" id="role-user"></span>
     </div>
     <span><a class="navbar-text" href="/logout" style="text-decoration: none">Logout</a></span>
 </header>
@@ -36,7 +37,7 @@
                 <h5>About user</h5>
             </div>
             <div style="padding: 20px 20px 40px 20px">
-                <table>
+                <table id="about-user">
                     <tbody>
                     <tr>
                         <th>ID</th>
@@ -45,15 +46,6 @@
                         <th>Age</th>
                         <th>Username</th>
                         <th>Role</th>
-                    </tr>
-
-                    <tr th:each="us : ${user}">
-                        <td th:utext="${us.getId()}">ID</td>
-                        <td th:utext="${us.getName()}">First name</td>
-                        <td th:utext="${us.getLastName()}">Last name</td>
-                        <td th:utext="${us.getAge()}">Age</td>
-                        <td th:utext="${us.getUsername()}">Username</td>
-                        <td th:utext="${us.getRoles()}">Role</td>
                     </tr>
                     </tbody>
                 </table>
