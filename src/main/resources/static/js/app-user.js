@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    fetch('/admin/users/par').then(currentUser => {
+    fetch('/users/principal').then(currentUser => {
         currentUser.json().then(data => {
             document.getElementById('current-user').innerText = data.username;
             document.getElementById('role-user').innerText = print(data.roles);

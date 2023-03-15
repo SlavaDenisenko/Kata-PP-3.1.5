@@ -1,7 +1,28 @@
 let roleList = [];
 
 $(document).ready(function () {
-    $.getJSON("/admin/users", function (data) {
+    let url = "/admin/users";
+    createTable(url);
+
+    fetch('/admin/users/authorities').then(roles => {
+        roles.json().then(data => {
+            roleList = data;
+        })
+    });
+
+    fetch('/admin/users/principal').then(currentUser => {
+        currentUser.json().then(data => {
+            document.getElementById('current-username').innerText = data.username;
+            document.getElementById('user-role').innerText = print(data.roles);
+        })
+    })
+})
+
+function createTable(url) {
+    for (let i = document.getElementById('userTable').getElementsByTagName('tr').length - 1; i; i--) {
+        document.getElementById('userTable').deleteRow(i);
+    }
+    $.getJSON(url, function (data) {
         $(data).each(function (key, value) {
             // language=HTML
             let rowEdit = `
@@ -28,54 +49,15 @@ $(document).ready(function () {
                 .append(rowEdit)
                 .append(rowDelete));
         })
-    });
-
-    fetch('/admin/users/authorities').then(roles => {
-        roles.json().then(data => {
-            roleList = data;
-        })
-    });
-
-    fetch('/admin/users/par').then(currentUser => {
-        currentUser.json().then(data => {
-            document.getElementById('current-username').innerText = data.username;
-            document.getElementById('user-role').innerText = print(data.roles);
-        })
     })
-})
+}
 
 $(document).ready(function () {
     $('#btn').click(function () {
-        for (let i = document.getElementById('userTable').getElementsByTagName('tr').length - 1; i; i--) {
-            document.getElementById('userTable').deleteRow(i);
-        }
         let getNum = document.getElementById('id').value;
         let url = 'admin/users/' + getNum;
         console.log(url);
-        $.getJSON(url, function (data) {
-            $(data).each(function (key, value) {
-                let rowEdit = `
-                    <td>
-                        <button class="btn-edit" id="btn-edit" onclick="editOpen()" data-id="${value.id}">Edit</button>
-                    </td>
-                `;
-
-                let rowDelete = `
-                    <td>
-                        <button class="btn-cancel" id="btn-delete" onclick="deleteOpen()" data-id="${value.id}">Delete</button>
-                    </td>
-                `;
-                $('#userTable').append($("<tr>")
-                    .append($("<td>").append(value.id))
-                    .append($("<td>").append(value.name))
-                    .append($("<td>").append(value.lastName))
-                    .append($("<td>").append(value.age))
-                    .append($("<td>").append(value.username))
-                    .append($("<td>").append(print(value.roles)))
-                    .append(rowEdit)
-                    .append(rowDelete));
-            })
-        })
+        createTable(url);
     })
 })
 
@@ -87,7 +69,6 @@ function changeToCreate() {
     document.getElementById('btn-new-user').className = 'btn-new';
     document.getElementById('btn-users-table').className = 'btn-new-non-active';
     document.getElementById('div-search').style.display = "none";
-
     cleanFormAdding();
 }
 
@@ -99,6 +80,8 @@ function changeToTable() {
     document.getElementById('btn-new-user').className = 'btn-new-non-active';
     document.getElementById('btn-users-table').className = 'btn-new';
     document.getElementById('div-search').style.display = "block";
+    let url = "/admin/users";
+    createTable(url);
 }
 
 $(document).on('click', '.btn-edit', function () {
@@ -122,12 +105,12 @@ function getEditUser(userId) {
             $('#age_update').val(userEdit.age);
             $('#username_update').val(userEdit.username);
             $('#password_update').val(userEdit.password);
-            $('#role_edit').empty().val('');
             for (let allRoles of roleList) {
                 // language=HTML
                 $('#role_edit').append(`
                     <option id="${allRoles.id}" name="${allRoles.name}">${printRole(allRoles.name)}</option>`)
             }
+            document.getElementById('role_edit').value = print(userEdit.roles);
         })
     })
 }
@@ -166,6 +149,7 @@ function deleteOpen() {
 
 function editClose() {
     document.getElementById('pop-up').style.display = "none";
+    $('#role_edit').empty().val('');
 }
 
 function deleteClose() {
@@ -178,6 +162,8 @@ function print(data) {
         return "ADMIN";
     } else if (text === "ROLE_USER") {
         return "USER";
+    } else if (text === "") {
+        return "looser";
     } else {
         return "ADMIN, USER";
     }
@@ -199,8 +185,11 @@ async function addNewUser() {
             'Content-Type': 'application/json;charset=utf-8'
         },
         body: JSON.stringify(user)
+    }).then(response => {
+        if (response.status === 409) {
+            alert("User with this username already exist");
+        }
     });
-    alert('User added successfully');
     cleanFormAdding();
 }
 
@@ -223,6 +212,9 @@ async function editUser() {
         body: JSON.stringify(user)
     });
     document.getElementById('pop-up').style.display = "none";
+    let url = "/admin/users";
+    createTable(url);
+    $('#role_edit').empty().val('');
 }
 
 async function deleteUser() {
@@ -233,6 +225,8 @@ async function deleteUser() {
         method: 'DELETE'
     });
     document.getElementById('pop-up-delete').style.display = "none";
+    let urlTable = "/admin/users";
+    createTable(urlTable);
 }
 
 function getRoles() {
@@ -249,7 +243,7 @@ function getRoles() {
 
 function getRolesUpdate() {
     let allRoles = [];
-    $.each($("select[name='role-edit'] option:selected"), function () {
+    $.each($("select[name='role_edit'] option:selected"), function () {
         let role = {};
         role.id = $(this).attr('id');
         role.name = $(this).attr('name');

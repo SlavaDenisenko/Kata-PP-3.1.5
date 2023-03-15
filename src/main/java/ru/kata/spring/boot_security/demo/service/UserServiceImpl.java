@@ -1,5 +1,7 @@
 package ru.kata.spring.boot_security.demo.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.dao.UserDao;
@@ -10,30 +12,34 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserDao userDao) {
+    @Autowired
+    public UserServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public void saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDao.save(user);
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public User findByUsername(String username) {
         return userDao.findByUsername(username);
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public User findById(Long id) {
         return userDao.findById(id).orElse(null);
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public List<User> findAll() {
         return userDao.findAll();
     }
