@@ -41,6 +41,7 @@ public class AdminsController {
             String username = user.getUsername();
             List<String> allUsernames = userService.findAll().stream().map(User::getUsername).toList();
             if (!allUsernames.contains(username)) {
+
                 this.userService.saveUser(user);
                 return new ResponseEntity<>(user, HttpStatus.CREATED);
             } else {
@@ -54,7 +55,7 @@ public class AdminsController {
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        this.userService.saveUser(user);
+        this.userService.updateUser(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
